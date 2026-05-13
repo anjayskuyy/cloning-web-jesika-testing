@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── App data (services, terapis, jadwal, bookings) ───────────────────
+    // Siapapun bisa baca (user perlu lihat layanan & slot)
+    // Ditulis dari web app dengan batasan ukuran
+    match /serenetouch/appdata {
+      allow read: if true;
+      allow write: if request.resource.data.keys().hasAny(['services','terapis','jadwal','harga','bisnis','fitur','bookings'])
+                   && request.resource.data.size() < 500000;
+    }
+
+    // Blokir semua akses lain
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

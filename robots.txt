@@ -1,0 +1,3 @@
+﻿# Blokir akses crawler ke folder admin
+User-agent: *
+Disallow: /admin/
